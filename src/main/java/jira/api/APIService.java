@@ -8,43 +8,93 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
+import jira.api.login.AuthorizePage;
+import jira.api.login.Cloud;
+import jira.api.login.GetAccessTokenRequest;
+import jira.api.login.GetAccessTokenResponse;
+import jira.api.login.LoginPageDesktop;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import static jira.api.APICommonUtils.*;
 
 public class APIService {
 	private static final Logger logger = LogManager.getLogger(APIService.class);
 
-	// TODO - ask - i wrote logs in the class that use this APIService. but i think
-	// instead of write logs there, i should write here because it's more depth. but
-	// i'm not sure. what do you say?
+	// TODO - ask i this CODE TOKEN and CloudID, should be here? i think it's ok
+	// because they serve(service)
+	private static String CODE;
+	private static String TOKEN;
+	private static String CloudID;
 
-	public static Gson gson = new Gson();
-	public static OkHttpClient client = new OkHttpClient();
-	public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+	public static void login() {
+		CODE = getCodeFromURL();
+		TOKEN = getAccessToken(CODE);
+		CloudID = getCloudID(TOKEN);
+	}
 
-	public String getCloudID(String TOKEN) throws JsonSyntaxException, IOException {
+	public static String getCodeFromURL() {
+		logger.info("getting CODE from url");
+//		WebDriver driver = useHeadlessDriver();
+		WebDriver driver = new ChromeDriver();
+
+		LoginPageDesktop loginPageDesktop = new LoginPageDesktop(driver);
+		AuthorizePage authorizePage = loginPageDesktop.login();
+		authorizePage.login();
+		String code = authorizePage.getCODE();
+		logger.info("got CODE from url");
+		return code;
+	}
+
+	public static String getAccessToken(String CODE) {
+		logger.info("getting TOKEN from server");
+		String BASE_TOKEN_URL = "https://auth.atlassian.com/oauth/token";
+		GetAccessTokenRequest getAccessTokenRequest = new GetAccessTokenRequest(CODE);
+		RequestBody body = RequestBody.create(gson.toJson(getAccessTokenRequest), JSON);
+		Request request = new Request.Builder().url(BASE_TOKEN_URL).post(body).build();
+
+		Response response = null;
+		try {
+			response = client.newCall(request).execute();
+			if (response.code() == 200) {
+				logger.info("got TOKEN response from server");
+			}
+		} catch (IOException e) {
+			logger.error("error in getting TOKEN from server", e);
+		}
+		return "Bearer " + getTokenFromResponse(response);
+	}
+
+	public static String getCloudID(String TOKEN) {
+		logger.info("getting Cloud-ID from server");
 		String BASE_CLOUD_URL = "https://api.atlassian.com/oauth/token/accessible-resources";
 
 		Request request = new Request.Builder().url(BASE_CLOUD_URL).addHeader("Authorization", TOKEN)
 				.addHeader("Accept", "application/json").build();
 
-		Response response = client.newCall(request).execute();
-
-		logIfWrongStatusCode(response);
-
+		Response response = null;
+		try {
+			response = client.newCall(request).execute();
+			if (response.code() == 200) {
+				logger.info("got Cloud-ID from server");
+			}
+		} catch (IOException e) {
+			logger.error("error in getting Cloud-ID from server", e);
+		}
 		return getIDFromCloudResponse(response);
 	}
 
-	private static String getIDFromCloudResponse(Response response) throws IOException {
+	private static String getIDFromCloudResponse(Response response) {
 		ResponseBody responseBody = response.body();
-		String jsonString = responseBody.string();
+		String jsonString = null;
+		try {
+			jsonString = responseBody.string();
+		} catch (IOException e) {
+			logger.error("error while parsing response body", e);
+		}
 		// next line remove the "[" "]" from response
 		jsonString = jsonString.substring(1, jsonString.length() - 1);
 
@@ -52,41 +102,15 @@ public class APIService {
 		return responseCloud.getId();
 	}
 
-	public String getAccessToken(String CODE) throws IOException {
-		String BASE_TOKEN_URL = "https://auth.atlassian.com/oauth/token";
-		GetAccessTokenRequest getAccessTokenRequest = new GetAccessTokenRequest(CODE);
-
-		RequestBody body = RequestBody.create(gson.toJson(getAccessTokenRequest), JSON);
-
-		Request request = new Request.Builder().url(BASE_TOKEN_URL).post(body).build();
-		Response response = client.newCall(request).execute();
-		logIfWrongStatusCode(response);
-
-		return "Bearer " + getTokenFromResponse(response);
-	}
-
-	private static String getTokenFromResponse(Response response) throws IOException {
+	private static String getTokenFromResponse(Response response) {
 		ResponseBody responseBody = response.body();
-		GetAccessTokenResponse getAccessTokenResponse = gson.fromJson(responseBody.string(),
-				GetAccessTokenResponse.class);
-		return getAccessTokenResponse.getAccess_token();
-	}
-
-	public String getCodeURL() throws IOException, InterruptedException {
-//		WebDriver driver = useHeadlessDriver();
-		WebDriver driver = new ChromeDriver();
-
-		LoginPageDesktop loginPageDesktop = new LoginPageDesktop(driver);
-		loginPageDesktop.login();
-		return loginPageDesktop.getCODE();
-	}
-
-	private static void logIfWrongStatusCode(Response response) {
-		int statusCode = response.code();
-		if (statusCode != 200) {
-			logger.error("error while getting CloudID from server, status code: " + statusCode + " message: "
-					+ response.message());
+		GetAccessTokenResponse getAccessTokenResponse = null;
+		try {
+			getAccessTokenResponse = gson.fromJson(responseBody.string(), GetAccessTokenResponse.class);
+		} catch (JsonSyntaxException | IOException e) {
+			logger.error("problem while gettin TOKEN from response", e);
 		}
+		return getAccessTokenResponse.getAccess_token();
 	}
 
 	public static WebDriver useHeadlessDriver() {

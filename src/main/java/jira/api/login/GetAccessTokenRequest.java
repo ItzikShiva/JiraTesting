@@ -1,4 +1,4 @@
-package jira.api;
+package jira.api.login;
 
 public class GetAccessTokenRequest {
 	private String grant_type = "authorization_code";

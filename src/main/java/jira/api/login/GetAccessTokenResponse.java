@@ -1,4 +1,4 @@
-package jira.api;
+package jira.api.login;
 
 public class GetAccessTokenResponse {
 	private String access_token;

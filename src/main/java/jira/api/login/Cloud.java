@@ -1,4 +1,4 @@
-package jira.api;
+package jira.api.login;
 
 import java.util.ArrayList;
 
