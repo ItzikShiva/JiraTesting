@@ -1,4 +1,4 @@
-package jira.api.login;
+package jira.ui.login;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -6,53 +6,50 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import jira.api.APICommonUtils;
+import static jira.ui.UICommonUtils.*;
 
-import static jira.api.APICommonUtils.*;
-
-public class LoginPageDesktop {
+public class LoginPageDesktop extends LoginBasePage {
 	private static final Logger logger = LogManager.getLogger(LoginPageDesktop.class);
 
-	// TODO - ask - Hod ther's driver declare here and in the authorizePage also. is
-	// it ok?
-	// (i feel like declare it once, but not sure, cause it's more readable like
-	// this)
-	private WebDriver driver;
-	public static APICommonUtils apiCommonUtils = new APICommonUtils();
-
 	private String BASE_CODE_URL = "https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=EMcZzazmRdqdGmD48zjmCD3tVielmpwN&scope=read:jira-work read:account read:me&redirect_uri=https%3A%2F%2Ftask-day.onrender.com%2F&response_type=code&prompt=consent";
+	private String username = "itzikv3@gmail.com";
+	private String password = "itzikpass";
 
 	private static WebElement usernameElement;
-	private static By usernameLocator = By.className("css-wxvfrp");
-
 	private static WebElement passwordElement;
-	private static By passwordLocator = By.name("password");
-
 	private static WebElement continueButton;
-	private static By contintueLocator = By.xpath("//span[text()='Continue']");
-
 	private static WebElement loginButton;
-	private static By loginLocator = By.xpath("//span[text()='Log in']");
+
+	private static By usernameElementLocator = By.className("css-wxvfrp");
+	private static By passwordElementLocator = By.name("password");
+	private static By continueButtonLocator = By.xpath("//span[text()='Continue']");
+	private static By loginButtonLocator = By.xpath("//span[text()='Log in']");
 
 	public LoginPageDesktop(WebDriver driver) {
+		super(driver);
 		logger.info("open\\start login page");
 		driver.get(BASE_CODE_URL);
 		this.driver = driver;
 	}
 
+	// TODO - ask, same name different signature, this is the best way?
 	public AuthorizePage login() {
+		return login(username, password);
+	}
+
+	public AuthorizePage login(String username, String password) {
 		logger.info("start login proccess");
 
-		usernameElement = waitForElementBy(driver, usernameLocator);
-		setUsername("itzikv3@gmail.com");
+		usernameElement = waitForElementByLocator(driver, usernameElementLocator);
+		setUsername(username);
 
-		continueButton = waitForElementBy(driver, contintueLocator);
+		continueButton = waitForElementByLocator(driver, continueButtonLocator);
 		continueButton.click();
 
-		loginButton = waitForElementBy(driver, loginLocator);
-		passwordElement = waitForElementBy(driver, passwordLocator);
+		loginButton = waitForElementByLocator(driver, loginButtonLocator);
+		passwordElement = waitForElementByLocator(driver, passwordElementLocator);
 
-		setPassword("itzikpass");
+		setPassword(password);
 		loginButton.click();
 		logger.info("login successful going to authorization");
 

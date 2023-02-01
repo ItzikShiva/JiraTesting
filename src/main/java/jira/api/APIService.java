@@ -4,57 +4,45 @@ import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import com.google.gson.JsonSyntaxException;
 
-import jira.api.login.AuthorizePage;
-import jira.api.login.Cloud;
 import jira.api.login.GetAccessTokenRequest;
 import jira.api.login.GetAccessTokenResponse;
-import jira.api.login.LoginPageDesktop;
+import jira.api.login.GetCloudResponse;
+import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import static jira.api.APICommonUtils.*;
+import static jira.ui.login.UILoginService.getSecretCode;
 
 public class APIService {
 	private static final Logger logger = LogManager.getLogger(APIService.class);
 
-	// TODO - ask i this CODE TOKEN and CloudID, should be here? i think it's ok
-	// because they serve(service)
-	private static String CODE;
-	private static String TOKEN;
-	private static String CloudID;
+	// stackoverflow and postman using this kind, (i just remove the utf) and
+	// changed the name
+	public static final MediaType jsonMediaType = MediaType.parse("application/json");
 
-	public static void login() {
-		CODE = getCodeFromURL();
-		TOKEN = getAccessToken(CODE);
-		CloudID = getCloudID(TOKEN);
+	private static String code;
+	private static String token;
+	private static String cloudId;
+
+	public void login() {
+		// TODO - ask, code = getSecretCode(); calls to UI, but i can't think about
+		// better place for it for this case
+		code = getSecretCode();
+		token = getAccessToken(code);
+		cloudId = getCloudID(token);
 	}
 
-	public static String getCodeFromURL() {
-		logger.info("getting CODE from url");
-//		WebDriver driver = useHeadlessDriver();
-		WebDriver driver = new ChromeDriver();
-
-		LoginPageDesktop loginPageDesktop = new LoginPageDesktop(driver);
-		AuthorizePage authorizePage = loginPageDesktop.login();
-		authorizePage.login();
-		String code = authorizePage.getCODE();
-		logger.info("got CODE from url");
-		return code;
-	}
-
-	public static String getAccessToken(String CODE) {
+	public static String getAccessToken(String code) {
 		logger.info("getting TOKEN from server");
-		String BASE_TOKEN_URL = "https://auth.atlassian.com/oauth/token";
-		GetAccessTokenRequest getAccessTokenRequest = new GetAccessTokenRequest(CODE);
-		RequestBody body = RequestBody.create(gson.toJson(getAccessTokenRequest), JSON);
-		Request request = new Request.Builder().url(BASE_TOKEN_URL).post(body).build();
+		String baseTokenUrl = "https://auth.atlassian.com/oauth/token";
+		GetAccessTokenRequest getAccessTokenRequest = new GetAccessTokenRequest(code);
+		RequestBody body = RequestBody.create(gson.toJson(getAccessTokenRequest), jsonMediaType);
+		Request request = new Request.Builder().url(baseTokenUrl).post(body).build();
 
 		Response response = null;
 		try {
@@ -63,26 +51,26 @@ public class APIService {
 				logger.info("got TOKEN response from server");
 			}
 		} catch (IOException e) {
-			logger.error("error in getting TOKEN from server", e);
+			logger.error("error in getting token from server", e);
 		}
 		return "Bearer " + getTokenFromResponse(response);
 	}
 
-	public static String getCloudID(String TOKEN) {
+	public static String getCloudID(String token) {
 		logger.info("getting Cloud-ID from server");
-		String BASE_CLOUD_URL = "https://api.atlassian.com/oauth/token/accessible-resources";
+		String baseCloudUrl = "https://api.atlassian.com/oauth/token/accessible-resources";
 
-		Request request = new Request.Builder().url(BASE_CLOUD_URL).addHeader("Authorization", TOKEN)
+		Request request = new Request.Builder().url(baseCloudUrl).addHeader("Authorization", token)
 				.addHeader("Accept", "application/json").build();
 
 		Response response = null;
 		try {
 			response = client.newCall(request).execute();
 			if (response.code() == 200) {
-				logger.info("got Cloud-ID from server");
+				logger.info("got Cloud-Id from server");
 			}
 		} catch (IOException e) {
-			logger.error("error in getting Cloud-ID from server", e);
+			logger.error("error in getting Cloud-Id from server", e);
 		}
 		return getIDFromCloudResponse(response);
 	}
@@ -98,8 +86,8 @@ public class APIService {
 		// next line remove the "[" "]" from response
 		jsonString = jsonString.substring(1, jsonString.length() - 1);
 
-		Cloud responseCloud = gson.fromJson(jsonString, Cloud.class);
-		return responseCloud.getId();
+		GetCloudResponse getCloudResponse = gson.fromJson(jsonString, GetCloudResponse.class);
+		return getCloudResponse.getId();
 	}
 
 	private static String getTokenFromResponse(Response response) {
@@ -108,14 +96,8 @@ public class APIService {
 		try {
 			getAccessTokenResponse = gson.fromJson(responseBody.string(), GetAccessTokenResponse.class);
 		} catch (JsonSyntaxException | IOException e) {
-			logger.error("problem while gettin TOKEN from response", e);
+			logger.error("problem while getting Token from response", e);
 		}
 		return getAccessTokenResponse.getAccess_token();
-	}
-
-	public static WebDriver useHeadlessDriver() {
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--headless");
-		return new ChromeDriver(options);
 	}
 }
