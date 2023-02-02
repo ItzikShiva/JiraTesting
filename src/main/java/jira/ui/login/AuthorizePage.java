@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class AuthorizePage extends LoginBasePage {
+public class AuthorizePage extends BasePage {
 	private static final Logger logger = LogManager.getLogger(AuthorizePage.class);
 	private static WebElement chooseElements;
 	private static WebElement acceptButton;

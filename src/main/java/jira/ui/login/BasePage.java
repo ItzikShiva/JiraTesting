@@ -2,10 +2,10 @@ package jira.ui.login;
 
 import org.openqa.selenium.WebDriver;
 
-public class LoginBasePage {
+public class BasePage {
 	public WebDriver driver;
 
-	public LoginBasePage(WebDriver driver) {
+	public BasePage(WebDriver driver) {
 		this.driver = driver;
 	}
 }

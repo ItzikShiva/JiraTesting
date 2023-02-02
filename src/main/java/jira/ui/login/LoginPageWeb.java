@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 
 import static jira.ui.UICommonUtils.*;
 
-public class LoginPageWeb extends LoginBasePage {
+public class LoginPageWeb extends BasePage {
 	private static final Logger logger = LogManager.getLogger(LoginPageWeb.class);
 
 	private String baseCodeUrl = "https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=EMcZzazmRdqdGmD48zjmCD3tVielmpwN&scope=read:jira-work read:account read:me&redirect_uri=https%3A%2F%2Ftask-day.onrender.com%2F&response_type=code&prompt=consent";
