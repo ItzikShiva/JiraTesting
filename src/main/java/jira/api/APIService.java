@@ -27,11 +27,8 @@ public class APIService {
 	public static String token;
 	public static String cloudId;
 
-	//scope: read:jira-work read:account read:me
 	public void login() {
-		// TODO - ask, code = getSecretCode(); calls to UI, but i can't think about
-		// better place for it for this case
-		code = getSecretCode(); 
+		code = getSecretCode();
 		token = getAccessToken(code);
 		cloudId = getCloudID(token);
 	}
@@ -82,13 +79,12 @@ public class APIService {
 		} catch (IOException e) {
 			logger.error("error while parsing response body", e);
 		}
-		
+
 		// next line remove add {} and name for generate the response to JSON
 		jsonString = "{clouds:" + jsonString + "}";
 
 		GetCloudResponse getCloudResponse = gson.fromJson(jsonString, GetCloudResponse.class);
 		return getCloudResponse.clouds.get(0).getId();
-//		return "93916ef5-a97b-47de-9a28-80fe8572a67e";
 	}
 
 	private static String getTokenFromResponse(Response response) {

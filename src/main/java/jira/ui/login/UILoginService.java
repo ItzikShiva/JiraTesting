@@ -16,7 +16,7 @@ public class UILoginService {
 		WebDriver driver = getHeadlessDriver();
 //		WebDriver driver = new ChromeDriver();
 
-		LoginPageDesktop loginPageDesktop = new LoginPageDesktop(driver);
+		LoginPageWeb loginPageDesktop = new LoginPageWeb(driver);
 		AuthorizePage authorizePage = loginPageDesktop.login();
 		authorizePage.login();
 		String code = authorizePage.getCode();

@@ -8,20 +8,13 @@ import org.openqa.selenium.WebElement;
 
 import static jira.ui.UICommonUtils.*;
 
-public class LoginPageDesktop extends LoginBasePage {
-	private static final Logger logger = LogManager.getLogger(LoginPageDesktop.class);
+public class LoginPageWeb extends LoginBasePage {
+	private static final Logger logger = LogManager.getLogger(LoginPageWeb.class);
 
-	private String BASE_CODE_URL = "https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=EMcZzazmRdqdGmD48zjmCD3tVielmpwN&scope=read:jira-work read:account read:me&redirect_uri=https%3A%2F%2Ftask-day.onrender.com%2F&response_type=code&prompt=consent";
-	private String username = "itzikv3@gmail.com";
-	private String password = "itzikpass";
-	private String scopes;
-//	private String validUsername validPassword;
-//	private String fullScopes;
-//	private String noScopes;
-	
-	//fullAuthLogin()	badTokenLogin() 	noAuthLogin()
-	//
-	
+	private String baseCodeUrl = "https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=EMcZzazmRdqdGmD48zjmCD3tVielmpwN&scope=read:jira-work read:account read:me&redirect_uri=https%3A%2F%2Ftask-day.onrender.com%2F&response_type=code&prompt=consent";
+	private static String username = "itzikv3@gmail.com";
+	private static String password = "itzikpass";
+
 	private static WebElement usernameElement;
 	private static WebElement passwordElement;
 	private static WebElement continueButton;
@@ -32,14 +25,13 @@ public class LoginPageDesktop extends LoginBasePage {
 	private static By continueButtonLocator = By.xpath("//span[text()='Continue']");
 	private static By loginButtonLocator = By.xpath("//span[text()='Log in']");
 
-	public LoginPageDesktop(WebDriver driver) {
+	public LoginPageWeb(WebDriver driver) {
 		super(driver);
 		logger.info("open\\start login page");
-		driver.get(BASE_CODE_URL);
+		driver.get(baseCodeUrl);
 		this.driver = driver;
 	}
 
-	// TODO - this gonna be validLogin()
 	public AuthorizePage login() {
 		return login(username, password);
 	}
@@ -57,8 +49,12 @@ public class LoginPageDesktop extends LoginBasePage {
 		passwordElement = waitForElementByLocator(driver, passwordElementLocator);
 
 		setPassword(password);
-		loginButton.click();
-		logger.info("login successful going to authorization");
+		submit();
+		if (waitForExpectedTitle(driver, "Authorize app")) {
+			logger.info("login successful going to authorization");
+		} else {
+			logger.error("login not successful");
+		}
 
 		return new AuthorizePage(driver);
 	}
@@ -69,5 +65,9 @@ public class LoginPageDesktop extends LoginBasePage {
 
 	public void setPassword(String password) {
 		passwordElement.sendKeys(password);
+	}
+
+	public void submit() {
+		loginButton.click();
 	}
 }

@@ -11,18 +11,23 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class UICommonUtils {
+
 	public static WebElement waitForElementByLocator(WebDriver driver, By by) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		return wait.until(ExpectedConditions.elementToBeClickable(by));
 	}
 
-	// wait for specific title of web page. return true if happen, else false.
+	/**
+	 wait for specific title of web page. return true if happen, else false.
+	*/
 	public static boolean waitForExpectedTitle(WebDriver driver, String expectedTitle) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		return wait.until(ExpectedConditions.titleIs(expectedTitle));
 	}
-
+	
+	/**
 	// get secret code that generate from url
+	*/
 	public static String getCodeFromUrl(WebDriver driver) {
 		String url = driver.getCurrentUrl();
 		int hashIndex = url.indexOf("#");
