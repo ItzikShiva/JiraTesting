@@ -3,49 +3,14 @@ package jira.api.login;
 import java.util.ArrayList;
 
 public class GetCloudResponse {
-	public String id;
-	public String url;
-	public String name;
-	public ArrayList<String> scopes;
-	public String avatarUrl;
+	public ArrayList<Cloud> clouds;
 
-	public String getId() {
-		return id;
+	public ArrayList<Cloud> getClouds() {
+		return clouds;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setClouds(ArrayList<Cloud> clouds) {
+		this.clouds = clouds;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public ArrayList<String> getScopes() {
-		return scopes;
-	}
-
-	public void setScopes(ArrayList<String> scopes) {
-		this.scopes = scopes;
-	}
-
-	public String getAvatarUrl() {
-		return avatarUrl;
-	}
-
-	public void setAvatarUrl(String avatarUrl) {
-		this.avatarUrl = avatarUrl;
-	}
 }

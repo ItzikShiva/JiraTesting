@@ -14,7 +14,14 @@ public class LoginPageDesktop extends LoginBasePage {
 	private String BASE_CODE_URL = "https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=EMcZzazmRdqdGmD48zjmCD3tVielmpwN&scope=read:jira-work read:account read:me&redirect_uri=https%3A%2F%2Ftask-day.onrender.com%2F&response_type=code&prompt=consent";
 	private String username = "itzikv3@gmail.com";
 	private String password = "itzikpass";
-
+	private String scopes;
+//	private String validUsername validPassword;
+//	private String fullScopes;
+//	private String noScopes;
+	
+	//fullAuthLogin()	badTokenLogin() 	noAuthLogin()
+	//
+	
 	private static WebElement usernameElement;
 	private static WebElement passwordElement;
 	private static WebElement continueButton;
@@ -32,7 +39,7 @@ public class LoginPageDesktop extends LoginBasePage {
 		this.driver = driver;
 	}
 
-	// TODO - ask, same name different signature, this is the best way?
+	// TODO - this gonna be validLogin()
 	public AuthorizePage login() {
 		return login(username, password);
 	}
