@@ -18,7 +18,7 @@ public class UICommonUtils {
 
 	// wait for specific title of web page. return true if happen, else false.
 	public static boolean waitForExpectedTitle(WebDriver driver, String expectedTitle) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		return wait.until(ExpectedConditions.titleIs(expectedTitle));
 	}
 
