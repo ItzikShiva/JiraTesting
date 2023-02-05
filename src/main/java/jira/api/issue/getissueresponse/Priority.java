@@ -1,19 +1,16 @@
 
-package jira.api.issue;
+package jira.api.issue.getissueresponse;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("jsonschema2pojo")
-public class Status {
+public class Priority {
 
     @SerializedName("self")
     @Expose
     private String self;
-    @SerializedName("description")
-    @Expose
-    private String description;
     @SerializedName("iconUrl")
     @Expose
     private String iconUrl;
@@ -23,9 +20,6 @@ public class Status {
     @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("statusCategory")
-    @Expose
-    private StatusCategory statusCategory;
 
     public String getSelf() {
         return self;
@@ -33,14 +27,6 @@ public class Status {
 
     public void setSelf(String self) {
         this.self = self;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getIconUrl() {
@@ -65,14 +51,6 @@ public class Status {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public StatusCategory getStatusCategory() {
-        return statusCategory;
-    }
-
-    public void setStatusCategory(StatusCategory statusCategory) {
-        this.statusCategory = statusCategory;
     }
 
 }

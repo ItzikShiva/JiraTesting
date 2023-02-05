@@ -1,12 +1,12 @@
 
-package jira.api.issue;
+package jira.api.issue.getissueresponse;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("jsonschema2pojo")
-public class Aggregateprogress {
+public class Progress {
 
     @SerializedName("progress")
     @Expose

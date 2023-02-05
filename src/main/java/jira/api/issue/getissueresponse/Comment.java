@@ -1,5 +1,5 @@
 
-package jira.api.issue;
+package jira.api.issue.getissueresponse;
 
 import java.util.List;
 import javax.annotation.Generated;
@@ -7,27 +7,38 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("jsonschema2pojo")
-public class Worklog {
+public class Comment {
 
-    @SerializedName("startAt")
+    @SerializedName("comments")
     @Expose
-    private Integer startAt;
+    private List<Object> comments;
+    @SerializedName("self")
+    @Expose
+    private String self;
     @SerializedName("maxResults")
     @Expose
     private Integer maxResults;
     @SerializedName("total")
     @Expose
     private Integer total;
-    @SerializedName("worklogs")
+    @SerializedName("startAt")
     @Expose
-    private List<Object> worklogs;
+    private Integer startAt;
 
-    public Integer getStartAt() {
-        return startAt;
+    public List<Object> getComments() {
+        return comments;
     }
 
-    public void setStartAt(Integer startAt) {
-        this.startAt = startAt;
+    public void setComments(List<Object> comments) {
+        this.comments = comments;
+    }
+
+    public String getSelf() {
+        return self;
+    }
+
+    public void setSelf(String self) {
+        this.self = self;
     }
 
     public Integer getMaxResults() {
@@ -46,12 +57,12 @@ public class Worklog {
         this.total = total;
     }
 
-    public List<Object> getWorklogs() {
-        return worklogs;
+    public Integer getStartAt() {
+        return startAt;
     }
 
-    public void setWorklogs(List<Object> worklogs) {
-        this.worklogs = worklogs;
+    public void setStartAt(Integer startAt) {
+        this.startAt = startAt;
     }
 
 }

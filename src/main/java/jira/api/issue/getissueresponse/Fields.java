@@ -1,5 +1,5 @@
 
-package jira.api.issue;
+package jira.api.issue.getissueresponse;
 
 import java.util.List;
 import javax.annotation.Generated;
