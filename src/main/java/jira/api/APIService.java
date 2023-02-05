@@ -29,7 +29,7 @@ public class APIService {
 	public String scope;
 
 	public void login() {
-		this.scope = "read:jira-work read:account read:me";
+		this.scope = "read:jira-work read:account read:me write:jira-work";
 		login(scope);
 		cloudId = getCloudID(token);
 	}

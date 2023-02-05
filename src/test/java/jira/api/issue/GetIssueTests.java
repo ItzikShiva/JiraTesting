@@ -26,7 +26,7 @@ public class GetIssueTests {
 		apiService.login();
 		Response response = issueService.getIssue(validIssueId);
 		Assert.assertTrue(response.code() == 200);
-		GetIssueResponse getIssueResponse = responseToPOJO(response, GetIssueResponse.class);
+		GetIssueResponse getIssueResponse = responseToObject(response, GetIssueResponse.class);
 		Assert.assertEquals(validIssueId, getIssueResponse.getKey());
 		logger.info("got issue with id: " + validIssueId);
 	}
