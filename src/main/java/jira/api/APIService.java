@@ -26,11 +26,18 @@ public class APIService {
 	public static String code;
 	public static String token;
 	public static String cloudId;
+	public String scope;
 
 	public void login() {
-		code = getSecretCode();
-		token = getAccessToken(code);
+		this.scope = "read:jira-work read:account read:me";
+		login(scope);
 		cloudId = getCloudID(token);
+	}
+
+	public void login(String scope) {
+		this.scope = scope;
+		code = getSecretCode(scope);
+		token = getAccessToken(code);
 	}
 
 	public static String getAccessToken(String code) {

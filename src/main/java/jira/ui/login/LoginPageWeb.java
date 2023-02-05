@@ -11,7 +11,7 @@ import static jira.ui.UICommonUtils.*;
 public class LoginPageWeb extends BasePage {
 	private static final Logger logger = LogManager.getLogger(LoginPageWeb.class);
 
-	private String baseCodeUrl = "https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=EMcZzazmRdqdGmD48zjmCD3tVielmpwN&scope=read:jira-work read:account read:me&redirect_uri=https%3A%2F%2Ftask-day.onrender.com%2F&response_type=code&prompt=consent";
+	private String baseCodeUrl;
 	private static String username = "itzikv3@gmail.com";
 	private static String password = "itzikpass";
 
@@ -25,8 +25,9 @@ public class LoginPageWeb extends BasePage {
 	private static By continueButtonLocator = By.xpath("//span[text()='Continue']");
 	private static By loginButtonLocator = By.xpath("//span[text()='Log in']");
 
-	public LoginPageWeb(WebDriver driver) {
+	public LoginPageWeb(WebDriver driver, String scope) {
 		super(driver);
+		setBaseCodeUrl(scope);
 		logger.info("open\\start login page");
 		driver.get(baseCodeUrl);
 		this.driver = driver;
@@ -51,7 +52,7 @@ public class LoginPageWeb extends BasePage {
 		setPassword(password);
 		submit();
 		if (waitForExpectedTitle(driver, "Authorize app")) {
-			logger.info("login successful going to authorization");
+			logger.info("first step login successful going to authorization");
 		} else {
 			logger.error("login not successful");
 		}
@@ -69,5 +70,15 @@ public class LoginPageWeb extends BasePage {
 
 	public void submit() {
 		loginButton.click();
+	}
+
+	/*
+	 * this method is an util for API login workaround. it called by the constructor
+	 * for the base url login. it get "scope" as a parameter and update the base url
+	 * for the login workaround.
+	 */
+	public void setBaseCodeUrl(String scope) {
+		this.baseCodeUrl = "https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=EMcZzazmRdqdGmD48zjmCD3tVielmpwN&scope="
+				+ scope + "&redirect_uri=https%3A%2F%2Ftask-day.onrender.com%2F&response_type=code&prompt=consent";
 	}
 }
