@@ -23,7 +23,7 @@ public class APIUtils {
 		    logger.error("error while parsing response body", e);
 		  }
 
-		  T pojoResponse = gson.fromJson(jsonString, clazz);
-		  return pojoResponse;
+		  T responseObject = gson.fromJson(jsonString, clazz);
+		  return responseObject;
 		}
 }

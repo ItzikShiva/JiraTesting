@@ -72,9 +72,13 @@ public class LoginPageWeb extends BasePage {
 		loginButton.click();
 	}
 
+	/*
+	 * this method is an util for API login workaround. it called by the constructor
+	 * for the base url login. it get "scope" as a parameter and update the base url
+	 * for the login workaround.
+	 */
 	public void setBaseCodeUrl(String scope) {
 		this.baseCodeUrl = "https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=EMcZzazmRdqdGmD48zjmCD3tVielmpwN&scope="
 				+ scope + "&redirect_uri=https%3A%2F%2Ftask-day.onrender.com%2F&response_type=code&prompt=consent";
 	}
-
 }

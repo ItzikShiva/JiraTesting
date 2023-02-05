@@ -47,8 +47,6 @@ public class GetIssueTests {
 		logger.info("authentication credentials are incorrect or missing");
 	}
 
-	// HOD - in documentation written 404. i get 403, so test failed, leave like
-	// this, yes?
 	@Test
 	public static void userWithoutPermission() {
 		apiService.login("read:me");
