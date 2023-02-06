@@ -48,15 +48,7 @@ public class APIService {
         RequestBody body = RequestBody.create(gson.toJson(getAccessTokenRequest), jsonMediaType);
         Request request = new Request.Builder().url(url).post(body).build();
 
-        Response response = null;
-        try {
-            response = client.newCall(request).execute();
-            if (response.code() == 200) {
-                logger.info("got TOKEN response from server");
-            }
-        } catch (IOException e) {
-            logger.error("error in getting token from server", e);
-        }
+        Response response = executeMethod(request, logger);
         return "Bearer " + getTokenFromResponse(response);
     }
 
@@ -67,15 +59,7 @@ public class APIService {
         Request request = new Request.Builder().url(url).addHeader("Authorization", token)
                 .addHeader("Accept", "application/json").build();
 
-        Response response = null;
-        try {
-            response = client.newCall(request).execute();
-            if (response.code() == 200) {
-                logger.info("got Cloud-Id from server");
-            }
-        } catch (IOException e) {
-            logger.error("error in getting Cloud-Id from server", e);
-        }
+        Response response = executeMethod(request, logger);
         return getIDFromCloudResponse(response);
     }
 

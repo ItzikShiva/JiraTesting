@@ -1,7 +1,6 @@
 package jira.api.issue;
 
-import static jira.api.APICommonUtils.client;
-import static jira.api.APICommonUtils.gson;
+import static jira.api.APICommonUtils.*;
 
 import java.io.IOException;
 
@@ -27,15 +26,9 @@ public class IssueService {
 
         Request request = new Request.Builder().url(baseUrl + issueKey).addHeader("Authorization", apiService.token).delete().build();
 
-        Response response = null;
-        try {
-            response = client.newCall(request).execute();
-            logger.info("got response from server");
-        } catch (IOException e) {
-            logger.error("error in getting response from server", e);
-        }
-        return response;
+        return executeMethod(request, logger);
     }
+
 
     public Response createIssue(CreateIssueRequest createIssueRequest) {
         logger.info("sending request for create issue to server");
@@ -43,14 +36,7 @@ public class IssueService {
         RequestBody body = RequestBody.create(gson.toJson(createIssueRequest), jsonMediaType);
         Request request = new Request.Builder().url(baseUrl).addHeader("Accept", "application/json").addHeader("Authorization", apiService.token).post(body).build();
 
-        Response response = null;
-        try {
-            response = client.newCall(request).execute();
-            logger.info("got response from server");
-        } catch (IOException e) {
-            logger.error("error in getting response from server", e);
-        }
-        return response;
+        return executeMethod(request, logger);
     }
 
     public Response getCreateMetadata() {
@@ -59,14 +45,7 @@ public class IssueService {
         Request request = new Request.Builder().url(baseUrl + "createmeta").addHeader("Accept", "application/json")
                 .addHeader("Authorization", apiService.token).build();
 
-        Response response = null;
-        try {
-            response = client.newCall(request).execute();
-            logger.info("got response from server");
-        } catch (IOException e) {
-            logger.error("error in getting response from server", e);
-        }
-        return response;
+        return executeMethod(request, logger);
     }
 
     public Response getIssue(String issueKey) {
@@ -79,13 +58,6 @@ public class IssueService {
         Request request = new Request.Builder().url(baseUrl + issueKey).addHeader("Accept", "application/json")
                 .addHeader("Authorization", token).build();
 
-        Response response = null;
-        try {
-            response = client.newCall(request).execute();
-            logger.info("got response from server");
-        } catch (IOException e) {
-            logger.error("error in getting response from server", e);
-        }
-        return response;
+        return executeMethod(request, logger);
     }
 }

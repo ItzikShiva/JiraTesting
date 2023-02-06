@@ -21,20 +21,16 @@ import jira.api.issue.createissuerequest.Reporter;
 import okhttp3.Response;
 
 import static jira.api.APIUtils.responseToObject;
+import static jira.api.issue.CreateIssueConstants.*;
+
 
 public class CreateIssueTests extends BaseIssueTests {
     private static final Logger logger = LogManager.getLogger(CreateIssueTests.class);
 
-
-    /*
-    * ask - this test is 4 steps, and it a bit long. but i can't see option for shorter. what do you say?
-    * another question - i initialize one time "response", and then assign to it again and again, is it ok?
-    */
     @Test
-
     public static void createIssue() {
         apiService.login();
-        // we not use it in that flow, just assert that we get it
+        // we not really use Metadata(next 2 lines) in that flow, just assert that we get it.
         Response response = issueService.getCreateMetadata();
         Assert.assertEquals(response.code(), 200);
         logger.info("got create issue Metadata");
@@ -59,24 +55,23 @@ public class CreateIssueTests extends BaseIssueTests {
     }
 
 
-    //TODO - ask, Hod, should i put constant? the values are only here (at least for now..)
     public static void insertValuesForCreateIssue(CreateIssueRequest createIssueRequest) {
         Fields fields = new Fields();
-        fields.setSummary("summary - itzikTest");
-        fields.setIssuetype(new Issuetype("10005"));
-        fields.setProject(new Project("10001"));
-        fields.setCustomfield_10020(2);
-        fields.setReporter(new Reporter("6236f756866b810069e20d9c"));
-        fields.setLabels(Arrays.asList("bugfix", "blitz_test"));
-        fields.setAssignee(new Assignee("6236f756866b810069e20d9c"));
+        fields.setSummary(SUMMARY);
+        fields.setIssuetype(new Issuetype(ISSUE_TYPE));
+        fields.setProject(new Project(PROJECT_ID));
+        fields.setCustomfield_10020(CUSTOM_FIELD_10020_ID);
+        fields.setReporter(new Reporter(REPORTER_ID));
+        fields.setLabels(LABELS);
+        fields.setAssignee(new Assignee(ASSIGNEE_ID));
         createIssueRequest.setFields(fields);
         Description description = new Description();
-        description.setType("doc");
-        description.setVersion(1);
+        description.setType(DESCRIPTION_TYPE);
+        description.setVersion(DESCRIPTION_VERSION);
         fields.setDescription(description);
-        List<Content> content = Arrays.asList(new Content("paragraph"));
+        List<Content> content = Arrays.asList(new Content(DESCRIPTION_CONTENT_TYPE));
         description.setContent(content);
-        List<Content__1> contents__1 = Arrays.asList(new Content__1("description fields - itzikTest", "text"));
+        List<Content__1> contents__1 = Arrays.asList(new Content__1(DESCRIPTION_CONTENT__1_TEXT, DESCRIPTION_CONTENT__1_TYPE));
         content.get(0).setContent(contents__1);
     }
 }
