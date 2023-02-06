@@ -30,6 +30,7 @@ public class CreateIssueTests {
 	 * TODO - itzik
 	 * 1. take all to func.
 	 * 2. make constant Class
+	 * 3. make response
 	 */
 	
 	
@@ -41,7 +42,18 @@ public class CreateIssueTests {
 		Assert.assertEquals(metadataResponse.code(), 200);
 		logger.info("got create issue Metadata");
 		CreateIssueRequest createIssueRequest = new CreateIssueRequest();
-//		function
+		insertValuesForCreateIssue(createIssueRequest);
+		logger.info(createIssueRequest);
+
+
+//		Response response = issueService.createIssue(request);
+
+//		new Content__1();
+//		make it createIssueResponse class
+
+	}
+
+	public static void insertValuesForCreateIssue(CreateIssueRequest createIssueRequest){
 		Fields fields = new Fields();
 		fields.setSummary("summary - itzikTest");
 
@@ -60,12 +72,6 @@ public class CreateIssueTests {
 		description.setContent(content);
 		List<Content__1> contents__1 = Arrays.asList(new Content__1("description fields - itzikTest", "text"));
 		content.get(0).setContent(contents__1);
-
-		System.out.println(createIssueRequest.toString());
-//		Response response = issueService.createIssue(request);
-
-//		new Content__1();
-//		make it createIssueResponse class
-
+//		return createIssueRequest;
 	}
 }
