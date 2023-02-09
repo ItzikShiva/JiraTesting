@@ -2,8 +2,6 @@ package jira.api.issue;
 
 import static jira.api.APICommonUtils.*;
 
-import java.io.IOException;
-
 import jira.api.issue.createissuerequest.CreateIssueRequest;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -29,12 +27,15 @@ public class IssueService {
         return executeMethod(request, logger);
     }
 
-
     public Response createIssue(CreateIssueRequest createIssueRequest) {
+        return createIssue(createIssueRequest, apiService.token);
+    }
+
+    public Response createIssue(CreateIssueRequest createIssueRequest, String token) {
         logger.info("sending request for create issue to server");
 
         RequestBody body = RequestBody.create(gson.toJson(createIssueRequest), jsonMediaType);
-        Request request = new Request.Builder().url(baseUrl).addHeader("Accept", "application/json").addHeader("Authorization", apiService.token).post(body).build();
+        Request request = new Request.Builder().url(baseUrl).addHeader("Accept", "application/json").addHeader("Authorization", token).post(body).build();
 
         return executeMethod(request, logger);
     }
