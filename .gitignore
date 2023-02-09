@@ -6,3 +6,5 @@
 /tests-outputs/
 /test-output/
 /tests-output/
+/.classpath
+.classpaths
