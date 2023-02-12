@@ -22,7 +22,7 @@ public class GetIssueTests extends BaseIssueTests {
     public static void getIssue() {
         apiService.login();
         Response response = issueService.getIssue(validIssueKey);
-        Assert.assertTrue(response.code() == 200);
+        Assert.assertEquals(response.code(), 200);
         GetIssueResponse getIssueResponse = responseToObject(response, GetIssueResponse.class);
         Assert.assertEquals(validIssueKey, getIssueResponse.getKey());
         logger.info("got issue with id: " + validIssueKey);
@@ -33,14 +33,14 @@ public class GetIssueTests extends BaseIssueTests {
         apiService.login();
         String id = "P-1";
         Response response = issueService.getIssue(id);
-        Assert.assertTrue(response.code() == 404);
+        Assert.assertEquals(response.code(), 404);
         logger.info("invalid issue id");
     }
 
     @Test
     public static void incorrectAuthentication() {
         Response response = issueService.getIssue(validIssueKey, INVALID_TOKEN);
-        Assert.assertTrue(response.code() == 401);
+        Assert.assertEquals(response.code(), 401);
         logger.info("authentication credentials are incorrect or missing");
     }
 
@@ -48,7 +48,7 @@ public class GetIssueTests extends BaseIssueTests {
     public static void userWithoutPermission() {
         apiService.login("read:me");
         Response response = issueService.getIssue(validIssueKey);
-        Assert.assertTrue(response.code() == 404);
+        Assert.assertEquals(response.code(), 404);
         logger.info("the user does not have permission to view it");
     }
 }

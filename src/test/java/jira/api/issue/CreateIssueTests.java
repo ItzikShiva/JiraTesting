@@ -93,7 +93,7 @@ public class CreateIssueTests extends BaseIssueTests {
     @Test
     public static void incorrectAuthentication() {
         Response response = issueService.createIssue(new CreateIssueRequest(), INVALID_TOKEN);
-        Assert.assertTrue(response.code() == 401);
+        Assert.assertEquals(response.code(), 401);
         logger.info("authentication credentials are incorrect or missing");
     }
 
@@ -101,7 +101,7 @@ public class CreateIssueTests extends BaseIssueTests {
     public static void userWithoutPermission() {
         apiService.login("read:me");
         Response response = issueService.createIssue(new CreateIssueRequest());
-        Assert.assertTrue(response.code() == 403);
+        Assert.assertEquals(response.code(), 403);
         logger.info("the user does not have permission to view it");
     }
 
