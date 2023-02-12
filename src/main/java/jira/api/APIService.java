@@ -28,6 +28,11 @@ public class APIService {
     public static String cloudId;
     public String scope;
 
+    /**
+     * login()
+     * param createIssueRequest
+     * param scope - optional. if not provide, use full permission:  "read:jira-work read:account read:me write:jira-work".
+     */
     public void login() {
         this.scope = "read:jira-work read:account read:me write:jira-work";
         login(scope);

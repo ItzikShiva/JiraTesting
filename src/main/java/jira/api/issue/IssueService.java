@@ -22,11 +22,17 @@ public class IssueService {
     public Response deleteIssue(String issueKey) {
         logger.info("sending request for delete issue, with issueKey: " + issueKey + " to server");
 
-        Request request = new Request.Builder().url(baseUrl + issueKey).addHeader("Authorization", apiService.token).delete().build();
+        Request request = new Request.Builder().url(baseUrl + issueKey).addHeader("Authorization", apiService.token)
+                .delete().build();
 
         return executeMethod(request, logger);
     }
 
+    /**
+     * createIssue()
+     * param createIssueRequest
+     * param token - optional. if not provide, uses default - valid token.
+     */
     public Response createIssue(CreateIssueRequest createIssueRequest) {
         return createIssue(createIssueRequest, apiService.token);
     }
@@ -35,7 +41,8 @@ public class IssueService {
         logger.info("sending request for create issue to server");
 
         RequestBody body = RequestBody.create(gson.toJson(createIssueRequest), jsonMediaType);
-        Request request = new Request.Builder().url(baseUrl).addHeader("Accept", "application/json").addHeader("Authorization", token).post(body).build();
+        Request request = new Request.Builder().url(baseUrl).addHeader("Accept", "application/json")
+                .addHeader("Authorization", token).post(body).build();
 
         return executeMethod(request, logger);
     }
@@ -49,6 +56,11 @@ public class IssueService {
         return executeMethod(request, logger);
     }
 
+    /**
+     * getIssue()
+     * param issueKey
+     * param token - optional. if not provide, uses default - valid token.
+     */
     public Response getIssue(String issueKey) {
         return getIssue(issueKey, apiService.token);
     }
