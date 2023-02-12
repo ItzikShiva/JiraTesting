@@ -2,18 +2,18 @@
 package jira.api.issue.baseissuerequest;
 
 import javax.annotation.Generated;
-import java.util.ArrayList;
+import java.util.List;
 
 @Generated("jsonschema2pojo")
 public class Update {
 
-    public ArrayList<Label> labels;
+    public List<Label> labels;
 
-    public ArrayList<Label> getLabels() {
+    public List<Label> getLabels() {
         return labels;
     }
 
-    public void setLabels(ArrayList<Label> labels) {
+    public void setLabels(List<Label> labels) {
         this.labels = labels;
     }
 }

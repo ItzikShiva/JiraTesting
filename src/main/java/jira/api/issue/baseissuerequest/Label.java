@@ -4,6 +4,10 @@ public class Label {
     public String add;
     public String remove;
 
+    public Label(String add) {
+        this.add = add;
+    }
+
     public String getAdd() {
         return add;
     }

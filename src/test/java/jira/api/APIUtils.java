@@ -32,7 +32,7 @@ public class APIUtils {
     }
 
     /**
-     * Hod - i wasnt sure where this func should be?
+     * Hod - i wasn't sure where this func should be? i think to create new util("smaller" then APIUtils) IssueUtils
      * <p>
      * this method insert values for CreateIssueRequest,the second parameter - true for valid values, false for invalid values;
      * third parameter - optional - summary

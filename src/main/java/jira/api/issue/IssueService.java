@@ -2,7 +2,6 @@ package jira.api.issue;
 
 import static jira.api.APICommonUtils.*;
 
-import jira.api.issue.baseissuerequest.BaseIssueRequest;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import org.apache.logging.log4j.LogManager;
