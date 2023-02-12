@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 import okhttp3.Response;
 
+import static jira.api.APIUtils.insertValuesForBaseIssueRequest;
 import static jira.api.APIUtils.responseToObject;
 import static jira.api.issue.IssueConstants.*;
 
@@ -30,7 +31,7 @@ public class CreateIssueTests extends BaseIssueTests {
         logger.info("got create issue Metadata");
 
         CreateIssueRequest createIssueRequest = new CreateIssueRequest();
-        insertValuesForCreateIssue(createIssueRequest, true);
+        insertValuesForBaseIssueRequest(createIssueRequest, true);
         response = issueService.createIssue(createIssueRequest);
         Assert.assertEquals(response.code(), 201);
         CreateIssueResponse createIssueResponse = responseToObject(response, CreateIssueResponse.class);
@@ -71,7 +72,7 @@ public class CreateIssueTests extends BaseIssueTests {
         logger.info("got create issue Metadata");
 
         CreateIssueRequest createIssueRequest = new CreateIssueRequest();
-        insertValuesForCreateIssue(createIssueRequest, false);
+        insertValuesForBaseIssueRequest(createIssueRequest, false);
         response = issueService.createIssue(createIssueRequest);
         Assert.assertEquals(response.code(), 400);
         //TODO - ask, Hod there are different errors, depend which value is missing, so i print the obj response, ok?
@@ -97,30 +98,5 @@ public class CreateIssueTests extends BaseIssueTests {
         logger.info("the user does not have permission to view it");
     }
 
-    /**
-     * this method insert values for CreateIssueRequest,the second parameter - true for valid values, false for invalid values
-     */
-    public static void insertValuesForCreateIssue(CreateIssueRequest createIssueRequest, boolean validValues) {
-        Fields fields = new Fields();
-        fields.setSummary(SUMMARY);
-        if (validValues) {
-            fields.setIssuetype(new Issuetype(ISSUE_TYPE));
-        } else {
-            fields.setIssuetype(new Issuetype("10070"));
-        }
-        fields.setProject(new Project(PROJECT_ID));
-        fields.setCustomfield_10020(CUSTOM_FIELD_10020_ID);
-        fields.setReporter(new Reporter(REPORTER_ID));
-        fields.setLabels(LABELS);
-        fields.setAssignee(new Assignee(ASSIGNEE_ID));
-        createIssueRequest.setFields(fields);
-        Description description = new Description();
-        description.setType(DESCRIPTION_TYPE);
-        description.setVersion(DESCRIPTION_VERSION);
-        fields.setDescription(description);
-        List<Content> content = Arrays.asList(new Content(DESCRIPTION_CONTENT_TYPE));
-        description.setContent(content);
-        List<Content__1> contents__1 = Arrays.asList(new Content__1(DESCRIPTION_CONTENT__1_TEXT, DESCRIPTION_CONTENT__1_TYPE));
-        content.get(0).setContent(contents__1);
-    }
+
 }
