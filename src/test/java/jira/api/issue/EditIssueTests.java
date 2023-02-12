@@ -24,7 +24,6 @@ public class EditIssueTests extends BaseIssueTests {
     @Test
     public static void editIssue() {
         apiService.login();
-        //create metadata - ask Hod if it needs for the test - actually I think not. because I don't test the "create metadata"?
 
         Response response = issueService.getIssue(issueKeyToEdit);
         Assert.assertEquals(response.code(), 200);
@@ -53,7 +52,7 @@ public class EditIssueTests extends BaseIssueTests {
     }
 
     @Test
-    public static void invalidIssueKey() {
+    public static void editIssueWithInvalidIssueKey() {
         apiService.login();
 
         Response response = issueService.editIssue(INVALID_ISSUE_KEY, new EditIssueRequest());

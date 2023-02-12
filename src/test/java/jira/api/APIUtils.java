@@ -38,14 +38,14 @@ public class APIUtils {
      * third parameter - optional - summary
      * (use by createIssueTests and EditIssueTests)
      */
-    public static void insertValuesForBaseIssueRequest(BaseIssueRequest baseIssueRequest, boolean validValues) {
-        insertValuesForBaseIssueRequest(baseIssueRequest, validValues, SUMMARY);
+    public static void insertValuesForBaseIssueRequest(BaseIssueRequest baseIssueRequest, boolean validIssueType) {
+        insertValuesForBaseIssueRequest(baseIssueRequest, validIssueType, SUMMARY);
     }
 
-    public static void insertValuesForBaseIssueRequest(BaseIssueRequest baseIssueRequest, boolean validValues, String summary) {
+    public static void insertValuesForBaseIssueRequest(BaseIssueRequest baseIssueRequest, boolean validIssueType, String summary) {
         Fields fields = new Fields();
         fields.setSummary(summary);
-        if (validValues) {
+        if (validIssueType) {
             fields.setIssuetype(new Issuetype(ISSUE_TYPE));
         } else {
             fields.setIssuetype(new Issuetype("10070"));
