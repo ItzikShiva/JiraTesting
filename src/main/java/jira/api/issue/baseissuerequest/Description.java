@@ -1,5 +1,5 @@
 
-package jira.api.issue.createissuerequest;
+package jira.api.issue.baseissuerequest;
 
 import java.util.List;
 import javax.annotation.Generated;
@@ -7,19 +7,18 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("jsonschema2pojo")
-public class Content {
-	@SerializedName("type")
+public class Description {
+
+    @SerializedName("type")
     @Expose
     private String type;
+    @SerializedName("version")
+    @Expose
+    private int version;
     @SerializedName("content")
     @Expose
-    private List<Content__1> content;
+    private List<Content> content;
 
-    public Content(String type) {
-		super();
-		this.type = type;
-	}
-    
     public String getType() {
         return type;
     }
@@ -28,11 +27,19 @@ public class Content {
         this.type = type;
     }
 
-    public List<Content__1> getContent() {
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public List<Content> getContent() {
         return content;
     }
 
-    public void setContent(List<Content__1> content) {
+    public void setContent(List<Content> content) {
         this.content = content;
     }
 

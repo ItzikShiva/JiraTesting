@@ -1,5 +1,5 @@
 
-package jira.api.issue.createissuerequest;
+package jira.api.issue.baseissuerequest;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;

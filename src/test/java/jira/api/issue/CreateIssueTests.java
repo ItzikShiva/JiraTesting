@@ -4,21 +4,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import jira.api.issue.baseissuerequest.*;
 import jira.api.issue.getissueresponse.GetIssueResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import jira.api.issue.createissuerequest.Assignee;
-import jira.api.issue.createissuerequest.Content;
-import jira.api.issue.createissuerequest.Content__1;
-import jira.api.issue.createissuerequest.CreateIssueRequest;
-import jira.api.issue.createissuerequest.Description;
-import jira.api.issue.createissuerequest.Fields;
-import jira.api.issue.createissuerequest.Issuetype;
-import jira.api.issue.createissuerequest.Project;
-import jira.api.issue.createissuerequest.Reporter;
 import okhttp3.Response;
 
 import static jira.api.APIUtils.responseToObject;

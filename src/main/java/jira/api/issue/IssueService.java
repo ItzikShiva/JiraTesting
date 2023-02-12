@@ -2,7 +2,7 @@ package jira.api.issue;
 
 import static jira.api.APICommonUtils.*;
 
-import jira.api.issue.createissuerequest.CreateIssueRequest;
+import jira.api.issue.baseissuerequest.BaseIssueRequest;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +18,18 @@ public class IssueService {
     private static String baseUrl = "https://api.atlassian.com/ex/jira/93916ef5-a97b-47de-9a28-80fe8572a67e/rest/api/3/issue/";
     public static final MediaType jsonMediaType = MediaType.parse("application/json");
 
+    public Response editIssue(String issueKey, EditIssueRequest editIssueRequest) {
+        return editIssue(issueKey, editIssueRequest, apiService.token);
+    }
+
+    public Response editIssue(String issueKey, EditIssueRequest editIssueRequest, String token) {
+        logger.info("sending request for edit issue, with issueKey: " + issueKey + " to server");
+
+        RequestBody body = RequestBody.create(gson.toJson(editIssueRequest), jsonMediaType);
+        Request request = new Request.Builder().url(baseUrl + issueKey).addHeader("Accept", "application/json").addHeader("Authorization", token).put(body).build();
+
+        return executeMethod(request, logger);
+    }
 
     public Response deleteIssue(String issueKey) {
         logger.info("sending request for delete issue, with issueKey: " + issueKey + " to server");
