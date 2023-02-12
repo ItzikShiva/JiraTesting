@@ -1,9 +1,10 @@
 package jira.api.issue;
 
-import static jira.api.APICommonUtils.client;
+import static jira.api.APICommonUtils.*;
 
-import java.io.IOException;
-
+import jira.api.issue.createissuerequest.CreateIssueRequest;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,28 +13,64 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class IssueService {
-	private static final Logger logger = LogManager.getLogger(IssueService.class);
-	private static APIService apiService = new APIService();
+    private static final Logger logger = LogManager.getLogger(IssueService.class);
+    private static APIService apiService = new APIService();
+    private static String baseUrl = "https://api.atlassian.com/ex/jira/93916ef5-a97b-47de-9a28-80fe8572a67e/rest/api/3/issue/";
+    public static final MediaType jsonMediaType = MediaType.parse("application/json");
 
-	public Response getIssue(String id) {
-		return getIssue(id, apiService.token);
-	}
 
-	public Response getIssue(String id, String token) {
-		logger.info("getting Issue from server");
-		String getIssueUrl = "https://api.atlassian.com/ex/jira/93916ef5-a97b-47de-9a28-80fe8572a67e/rest/api/3/issue/"
-				+ id;
+    public Response deleteIssue(String issueKey) {
+        logger.info("sending request for delete issue, with issueKey: " + issueKey + " to server");
 
-		Request request = new Request.Builder().url(getIssueUrl).addHeader("Accept", "application/json")
-				.addHeader("Authorization", token).build();
+        Request request = new Request.Builder().url(baseUrl + issueKey).addHeader("Authorization", apiService.token)
+                .delete().build();
 
-		Response response = null;
-		try {
-			response = client.newCall(request).execute();
-			logger.info("got response from server");
-		} catch (IOException e) {
-			logger.error("error in getting response from server", e);
-		}
-		return response;
-	}
+        return executeMethod(request, logger);
+    }
+
+    /**
+     * createIssue()
+     * param createIssueRequest
+     * param token - optional. if not provide, uses default - valid token.
+     */
+    public Response createIssue(CreateIssueRequest createIssueRequest) {
+        return createIssue(createIssueRequest, apiService.token);
+    }
+
+    public Response createIssue(CreateIssueRequest createIssueRequest, String token) {
+        logger.info("sending request for create issue to server");
+
+        RequestBody body = RequestBody.create(gson.toJson(createIssueRequest), jsonMediaType);
+        Request request = new Request.Builder().url(baseUrl).addHeader("Accept", "application/json")
+                .addHeader("Authorization", token).post(body).build();
+
+        return executeMethod(request, logger);
+    }
+
+    public Response getCreateMetadata() {
+        logger.info("getting create issue metadata from server");
+
+        Request request = new Request.Builder().url(baseUrl + "createmeta").addHeader("Accept", "application/json")
+                .addHeader("Authorization", apiService.token).build();
+
+        return executeMethod(request, logger);
+    }
+
+    /**
+     * getIssue()
+     * param issueKey
+     * param token - optional. if not provide, uses default - valid token.
+     */
+    public Response getIssue(String issueKey) {
+        return getIssue(issueKey, apiService.token);
+    }
+
+    public Response getIssue(String issueKey, String token) {
+        logger.info("getting Issue from server");
+
+        Request request = new Request.Builder().url(baseUrl + issueKey).addHeader("Accept", "application/json")
+                .addHeader("Authorization", token).build();
+
+        return executeMethod(request, logger);
+    }
 }

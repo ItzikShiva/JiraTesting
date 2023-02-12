@@ -13,7 +13,7 @@ import okhttp3.ResponseBody;
 public class APIUtils {
 	private static final Logger logger = LogManager.getLogger(APIUtils.class);
 
-	public static <T> T responseToPOJO(Response response, Class<T> clazz) {
+	public static <T> T responseToObject(Response response, Class<T> clazz) {
 		  ResponseBody responseBody = response.body();
 		  String jsonString = null;
 
