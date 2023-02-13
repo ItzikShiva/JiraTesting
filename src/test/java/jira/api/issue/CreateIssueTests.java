@@ -2,7 +2,9 @@ package jira.api.issue;
 
 import java.io.IOException;
 
+import jira.api.APIUtils;
 import jira.api.issue.getissueresponse.GetIssueResponse;
+import jira.api.issue.issuerequest.IssueRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
@@ -11,7 +13,7 @@ import org.testng.annotations.Test;
 
 import okhttp3.Response;
 
-import static jira.api.APIUtils.insertValuesForBaseIssueRequest;
+import static jira.api.APIUtils.insertValuesForIssueRequest;
 import static jira.api.APIUtils.responseToObject;
 import static jira.api.issue.IssueConstants.*;
 
@@ -25,8 +27,8 @@ public class CreateIssueTests extends BaseIssueTests {
     public static void createIssue() {
         apiService.login();
 
-        CreateIssueRequest createIssueRequest = new CreateIssueRequest();
-        insertValuesForBaseIssueRequest(createIssueRequest, true);
+        IssueRequest createIssueRequest = new IssueRequest();
+        APIUtils.insertValuesForIssueRequest(createIssueRequest, true);
 
         Response response = issueService.createIssue(createIssueRequest);
         Assert.assertEquals(response.code(), 201);
@@ -46,7 +48,7 @@ public class CreateIssueTests extends BaseIssueTests {
     public static void createIssueWithMissingFields() {
         apiService.login();
 
-        CreateIssueRequest createIssueRequest = new CreateIssueRequest();
+        IssueRequest createIssueRequest = new IssueRequest();
         Response response = issueService.createIssue(createIssueRequest);
         Assert.assertEquals(response.code(), 400);
         logger.info("Issue was not created - problem in JSON request");
@@ -56,8 +58,8 @@ public class CreateIssueTests extends BaseIssueTests {
     public static void createIssueWithInvalidIssueType() {
         apiService.login();
 
-        CreateIssueRequest createIssueRequest = new CreateIssueRequest();
-        insertValuesForBaseIssueRequest(createIssueRequest, false);
+        IssueRequest createIssueRequest = new IssueRequest();
+        APIUtils.insertValuesForIssueRequest(createIssueRequest, false);
         Response response = issueService.createIssue(createIssueRequest);
         Assert.assertEquals(response.code(), 400);
 
@@ -70,7 +72,7 @@ public class CreateIssueTests extends BaseIssueTests {
 
     @Test
     public static void incorrectAuthentication() {
-        Response response = issueService.createIssue(new CreateIssueRequest(), INVALID_TOKEN);
+        Response response = issueService.createIssue(new IssueRequest(), INVALID_TOKEN);
         Assert.assertEquals(response.code(), 401);
         logger.info("authentication credentials are incorrect or missing");
     }
@@ -78,7 +80,7 @@ public class CreateIssueTests extends BaseIssueTests {
     @Test
     public static void userWithoutPermission() {
         apiService.login("read:me");
-        Response response = issueService.createIssue(new CreateIssueRequest());
+        Response response = issueService.createIssue(new IssueRequest());
         Assert.assertEquals(response.code(), 403);
         logger.info("the user does not have permission to view it");
     }

@@ -1,12 +1,12 @@
 
-package jira.api.issue.baseissuerequest;
+package jira.api.issue.issuerequest;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("jsonschema2pojo")
-public class BaseIssueRequest {
+public class IssueRequest {
 
     @SerializedName("update")
     @Expose
