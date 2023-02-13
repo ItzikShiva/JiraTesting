@@ -1,5 +1,6 @@
 package jira.api.issue;
 
+import jira.api.issue.issuerequest.IssueRequest;
 import okhttp3.Response;
 import org.apache.logging.log4j.LogManager;
 import org.testng.Assert;
@@ -7,7 +8,7 @@ import org.testng.annotations.Test;
 
 import org.apache.logging.log4j.Logger;
 
-import static jira.api.APIUtils.insertValuesForBaseIssueRequest;
+import static jira.api.APIUtils.insertValuesForIssueRequest;
 import static jira.api.APIUtils.responseToObject;
 import static jira.api.issue.IssueConstants.INVALID_ISSUE_KEY;
 import static jira.api.issue.IssueConstants.INVALID_TOKEN;
@@ -21,8 +22,8 @@ public class DeleteIssueTests extends BaseIssueTests {
     public static void deleteIssue() {
         apiService.login();
 
-        CreateIssueRequest createIssueRequest = new CreateIssueRequest();
-        insertValuesForBaseIssueRequest(createIssueRequest, true);
+        IssueRequest createIssueRequest = new IssueRequest();
+        insertValuesForIssueRequest(createIssueRequest, true);
         Response response = issueService.createIssue(createIssueRequest);
         Assert.assertEquals(response.code(), 201);
         CreateIssueResponse createIssueResponse = responseToObject(response, CreateIssueResponse.class);
