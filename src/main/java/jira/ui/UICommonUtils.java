@@ -37,7 +37,6 @@ public class UICommonUtils {
     /**
      * return chrome driver that not really open the browser, work behind.
      */
-
     public static WebDriver getHeadlessDriver() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
