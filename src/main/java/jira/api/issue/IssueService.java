@@ -37,10 +37,19 @@ public class IssueService {
         return executeMethod(request, logger);
     }
 
+    /**
+     * deleteIssue()
+     * param issueKey - required
+     * param token - optional. if not provide, uses default - valid token.
+     */
     public Response deleteIssue(String issueKey) {
+        return deleteIssue(issueKey, apiService.token);
+    }
+
+    public Response deleteIssue(String issueKey, String token) {
         logger.info("sending request for delete issue, with issueKey: " + issueKey + " to server");
 
-        Request request = new Request.Builder().url(baseUrl + issueKey).addHeader("Authorization", apiService.token)
+        Request request = new Request.Builder().url(baseUrl + issueKey).addHeader("Authorization", token)
                 .delete().build();
 
         return executeMethod(request, logger);
