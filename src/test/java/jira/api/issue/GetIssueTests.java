@@ -31,10 +31,10 @@ public class GetIssueTests extends BaseIssueTests {
     @Test
     public static void invalidIssueKey() {
         apiService.login();
-        String id = "P-1";
-        Response response = issueService.getIssue(id);
+
+        Response response = issueService.getIssue(INVALID_ISSUE_KEY);
         Assert.assertEquals(response.code(), 404);
-        logger.info("invalid issue id");
+        logger.info("invalid issue key");
     }
 
     @Test
@@ -44,6 +44,7 @@ public class GetIssueTests extends BaseIssueTests {
         logger.info("authentication credentials are incorrect or missing");
     }
 
+    //need to open bug for this
     @Test
     public static void userWithoutPermission() {
         apiService.login("read:me");

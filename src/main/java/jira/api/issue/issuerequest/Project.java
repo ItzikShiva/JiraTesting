@@ -1,23 +1,23 @@
 
-package jira.api.issue.createissuerequest;
+package jira.api.issue.issuerequest;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("jsonschema2pojo")
-public class Issuetype {
+public class Project {
 
-    @SerializedName("id")
-    @Expose
-    private String id;
-
-    public Issuetype(String id) {
+    public Project(String id) {
 		super();
 		this.id = id;
 	}
 
-	public String getId() {
+	@SerializedName("id")
+    @Expose
+    private String id;
+
+    public String getId() {
         return id;
     }
 

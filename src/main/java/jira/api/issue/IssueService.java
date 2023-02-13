@@ -2,7 +2,7 @@ package jira.api.issue;
 
 import static jira.api.APICommonUtils.*;
 
-import jira.api.issue.createissuerequest.CreateIssueRequest;
+import jira.api.issue.issuerequest.IssueRequest;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import org.apache.logging.log4j.LogManager;
@@ -18,11 +18,39 @@ public class IssueService {
     private static String baseUrl = "https://api.atlassian.com/ex/jira/93916ef5-a97b-47de-9a28-80fe8572a67e/rest/api/3/issue/";
     public static final MediaType jsonMediaType = MediaType.parse("application/json");
 
+    /**
+     * editIssue()
+     * param issueKey - required
+     * param editIssueRequest - required
+     * param token - optional. if not provide, uses default - valid token.
+     */
+    public Response editIssue(String issueKey, IssueRequest editIssueRequest) {
+        return editIssue(issueKey, editIssueRequest, apiService.token);
+    }
 
+    public Response editIssue(String issueKey, IssueRequest editIssueRequest, String token) {
+        logger.info("sending request for edit issue, with issueKey: " + issueKey + " to server");
+
+        RequestBody body = RequestBody.create(gson.toJson(editIssueRequest), jsonMediaType);
+        Request request = new Request.Builder().url(baseUrl + issueKey).addHeader("Accept", "application/json")
+                .addHeader("Authorization", token).put(body).build();
+
+        return executeMethod(request, logger);
+    }
+
+    /**
+     * deleteIssue()
+     * param issueKey - required
+     * param token - optional. if not provide, uses default - valid token.
+     */
     public Response deleteIssue(String issueKey) {
+        return deleteIssue(issueKey, apiService.token);
+    }
+
+    public Response deleteIssue(String issueKey, String token) {
         logger.info("sending request for delete issue, with issueKey: " + issueKey + " to server");
 
-        Request request = new Request.Builder().url(baseUrl + issueKey).addHeader("Authorization", apiService.token)
+        Request request = new Request.Builder().url(baseUrl + issueKey).addHeader("Authorization", token)
                 .delete().build();
 
         return executeMethod(request, logger);
@@ -30,14 +58,14 @@ public class IssueService {
 
     /**
      * createIssue()
-     * param createIssueRequest
+     * param createIssueRequest - required
      * param token - optional. if not provide, uses default - valid token.
      */
-    public Response createIssue(CreateIssueRequest createIssueRequest) {
+    public Response createIssue(IssueRequest createIssueRequest) {
         return createIssue(createIssueRequest, apiService.token);
     }
 
-    public Response createIssue(CreateIssueRequest createIssueRequest, String token) {
+    public Response createIssue(IssueRequest createIssueRequest, String token) {
         logger.info("sending request for create issue to server");
 
         RequestBody body = RequestBody.create(gson.toJson(createIssueRequest), jsonMediaType);
@@ -58,7 +86,7 @@ public class IssueService {
 
     /**
      * getIssue()
-     * param issueKey
+     * param issueKey - required
      * param token - optional. if not provide, uses default - valid token.
      */
     public Response getIssue(String issueKey) {
