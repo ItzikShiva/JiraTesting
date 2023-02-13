@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import jira.api.issue.baseissuerequest.*;
+import jira.api.issue.issuerequest.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,17 +32,15 @@ public class APIUtils {
     }
 
     /**
-     * Hod - i wasn't sure where this func should be? i think to create new util("smaller" then APIUtils) IssueUtils
-     * <p>
      * this method insert values for CreateIssueRequest,the second parameter - true for valid values, false for invalid values;
      * third parameter - optional - summary
      * (use by createIssueTests and EditIssueTests)
      */
-    public static void insertValuesForBaseIssueRequest(BaseIssueRequest baseIssueRequest, boolean validIssueType) {
-        insertValuesForBaseIssueRequest(baseIssueRequest, validIssueType, SUMMARY);
+    public static void insertValuesForIssueRequest(IssueRequest issueRequest, boolean validIssueType) {
+        insertValuesForIssueRequest(issueRequest, validIssueType, SUMMARY);
     }
 
-    public static void insertValuesForBaseIssueRequest(BaseIssueRequest baseIssueRequest, boolean validIssueType, String summary) {
+    public static void insertValuesForIssueRequest(IssueRequest issueRequest, boolean validIssueType, String summary) {
         Fields fields = new Fields();
         fields.setSummary(summary);
         if (validIssueType) {
@@ -55,7 +53,7 @@ public class APIUtils {
         fields.setReporter(new Reporter(REPORTER_ID));
         fields.setLabels(LABELS);
         fields.setAssignee(new Assignee(ASSIGNEE_ID));
-        baseIssueRequest.setFields(fields);
+        issueRequest.setFields(fields);
         Description description = new Description();
         description.setType(DESCRIPTION_TYPE);
         description.setVersion(DESCRIPTION_VERSION);

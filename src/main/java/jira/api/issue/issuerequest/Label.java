@@ -1,4 +1,4 @@
-package jira.api.issue.baseissuerequest;
+package jira.api.issue.issuerequest;
 
 public class Label {
     public String add;

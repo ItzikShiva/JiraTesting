@@ -2,6 +2,7 @@ package jira.api.issue;
 
 import static jira.api.APICommonUtils.*;
 
+import jira.api.issue.issuerequest.IssueRequest;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import org.apache.logging.log4j.LogManager;
@@ -23,11 +24,11 @@ public class IssueService {
      * param editIssueRequest - required
      * param token - optional. if not provide, uses default - valid token.
      */
-    public Response editIssue(String issueKey, EditIssueRequest editIssueRequest) {
+    public Response editIssue(String issueKey, IssueRequest editIssueRequest) {
         return editIssue(issueKey, editIssueRequest, apiService.token);
     }
 
-    public Response editIssue(String issueKey, EditIssueRequest editIssueRequest, String token) {
+    public Response editIssue(String issueKey, IssueRequest editIssueRequest, String token) {
         logger.info("sending request for edit issue, with issueKey: " + issueKey + " to server");
 
         RequestBody body = RequestBody.create(gson.toJson(editIssueRequest), jsonMediaType);
@@ -60,11 +61,11 @@ public class IssueService {
      * param createIssueRequest - required
      * param token - optional. if not provide, uses default - valid token.
      */
-    public Response createIssue(CreateIssueRequest createIssueRequest) {
+    public Response createIssue(IssueRequest createIssueRequest) {
         return createIssue(createIssueRequest, apiService.token);
     }
 
-    public Response createIssue(CreateIssueRequest createIssueRequest, String token) {
+    public Response createIssue(IssueRequest createIssueRequest, String token) {
         logger.info("sending request for create issue to server");
 
         RequestBody body = RequestBody.create(gson.toJson(createIssueRequest), jsonMediaType);
