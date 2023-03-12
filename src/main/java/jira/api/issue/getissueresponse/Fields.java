@@ -35,7 +35,7 @@ public class Fields {
     private Object aggregatetimespent;
     @SerializedName("resolution")
     @Expose
-    private Object resolution;
+    private Resolution resolution;
     @SerializedName("customfield_10027")
     @Expose
     private Object customfield10027;
@@ -278,11 +278,11 @@ public class Fields {
         this.aggregatetimespent = aggregatetimespent;
     }
 
-    public Object getResolution() {
+    public Resolution getResolution() {
         return resolution;
     }
 
-    public void setResolution(Object resolution) {
+    public void setResolution(Resolution resolution) {
         this.resolution = resolution;
     }
 
