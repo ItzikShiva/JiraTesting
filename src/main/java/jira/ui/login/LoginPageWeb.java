@@ -13,7 +13,7 @@ public class LoginPageWeb extends BasePage {
 
 	private String baseCodeUrl;
 	private static String username = "itzikv3@gmail.com";
-	private static String password = "itzikpass";
+	private static String password = "itzikpass1212";
 
 	private static WebElement usernameElement;
 	private static WebElement passwordElement;

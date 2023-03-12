@@ -1,17 +1,15 @@
 package jira.api.issue;
 
+import jira.api.issue.getissueresponse.GetIssueResponse;
+import okhttp3.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import jira.api.issue.getissueresponse.GetIssueResponse;
-
-import static jira.api.APIUtils.*;
-
-import okhttp3.Response;
-
-import static jira.api.issue.IssueConstants.*;
+import static jira.api.APIUtils.responseToObject;
+import static jira.api.issue.IssueConstants.INVALID_ISSUE_KEY;
+import static jira.api.issue.IssueConstants.INVALID_TOKEN;
 
 
 public class GetIssueTests extends BaseIssueTests {

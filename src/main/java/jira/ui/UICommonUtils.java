@@ -38,7 +38,9 @@ public class UICommonUtils {
      * return chrome driver that not really open the browser, work behind.
      */
     public static WebDriver getHeadlessDriver() {
+        System.setProperty("webdriver.chrome.driver", "C://Drivers//chromedriver//chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless");
         return new ChromeDriver(options);
     }
