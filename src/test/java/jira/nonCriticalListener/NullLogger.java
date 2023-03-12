@@ -1,4 +1,4 @@
-package jira.nonCritical;
+package jira.nonCriticalListener;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;

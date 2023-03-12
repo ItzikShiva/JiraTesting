@@ -1,4 +1,4 @@
-package jira.nonCritical;
+package jira.nonCriticalListener;
 
 import jira.api.issue.BaseIssueTests;
 import jira.api.issue.getissueresponse.GetIssueResponse;
@@ -15,6 +15,7 @@ public class NonCriticalListener extends BaseIssueTests implements IInvokedMetho
     private static final Logger logger = LogManager.getLogger(NonCriticalListener.class);
 
     /**
+     * isBugOpen(String issueKey)
      * If the response code isn't 200, the method returns false - bug is NOT open.
      * Then it checks if the issue has a resolution or not. If the issue has a resolution, it means that it is DONE, so the method returns false.
      * If the issue does not have a resolution, it means that it is OPEN, so the method returns true.
@@ -31,38 +32,37 @@ public class NonCriticalListener extends BaseIssueTests implements IInvokedMetho
         return getIssueResponse.getFields().getResolution() == null;
     }
 
+
     @Override
     public void afterInvocation(IInvokedMethod method, ITestResult testResult) {
-//        if (logger ==null || logger instanceof NullLogger){
-//            logger = loggerNonCritical;
-//        }
         if (method.getTestMethod().getConstructorOrMethod().getMethod().isAnnotationPresent(NonCritical.class)) {
-            NonCritical annotation = method.getTestMethod().getConstructorOrMethod().getMethod().getAnnotation(NonCritical.class);
 
-//            get issue status
+            NonCritical annotation = method.getTestMethod().getConstructorOrMethod().getMethod().getAnnotation(NonCritical.class);
+            String bugKey = annotation.bugKey();
 
             if (testResult.getStatus() == ITestResult.SUCCESS) {
-                if (isBugOpen(annotation.bugKey())) {
-                    logger.error("test originally was passed. and BUG with: " + annotation.bugKey() + " is open. please close that bug!");
-                    testResult.setStatus(ITestResult.FAILURE);
-                } else {
-                    logger.warn("remove unneeded annotation from this test");
-                }
+                caseTestSuccess(testResult, bugKey);
             } else {
-                if (isBugOpen(annotation.bugKey())) {
-                    logger.error("test originally was failed. BUG with: " + annotation.bugKey() + " already open. test was skipped");
-                    testResult.setStatus(ITestResult.SKIP);
-                } else {
-                    logger.error("investigation for the test and bug: " + annotation.bugKey() + "required!");
-                }
-                /**
-                 * 1. is bug open?
-                 * if yes Mark test as skipped - testResult.setStatus(ITestResult.SKIP)
-                 * else Fail test - testResult.setStatus(ITestResult.FAILURE), log investigation required
-                 */
-                // execute a function when test passes and has NonCritical annotation with bugKey = "mybugKey"
+                caseTestFailed(testResult, bugKey);
             }
+        }
+    }
 
+    private void caseTestSuccess(ITestResult testResult, String bugKey) {
+        if (isBugOpen(bugKey)) {
+            logger.error("test originally was passed. and BUG with: " + bugKey + " is open. please close that bug!");
+            testResult.setStatus(ITestResult.FAILURE);
+        } else {
+            logger.warn("remove unneeded annotation from this test");
+        }
+    }
+
+    private void caseTestFailed(ITestResult testResult, String bugKey) {
+        if (isBugOpen(bugKey)) {
+            logger.error("test originally was failed. BUG with: " + bugKey + " already open. test was skipped");
+            testResult.setStatus(ITestResult.SKIP);
+        } else {
+            logger.error("investigation for the test and bug: " + bugKey + "required!");
         }
     }
 }
